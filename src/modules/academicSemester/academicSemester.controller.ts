@@ -1,6 +1,7 @@
 
 import {Request,Response} from 'express'
 import { AcademicSemesterService } from './academicSemester.service'
+import pick from '../../shared/pick';
 const insertIntoDb = async(req:Request,res:Response)=>{
     try {
         const result = await AcademicSemesterService.insertIntoDb(req.body);
@@ -13,7 +14,10 @@ const insertIntoDb = async(req:Request,res:Response)=>{
 
 const getFromDb = async(req:Request,res:Response)=>{
     try {
-        const result = await AcademicSemesterService.getFromDb()
+        const filters = pick(req.query,['searchTerm','code','year'])
+        
+        const options = pick(req.query,['limit','page','sortBy','sortOrder'])
+        const result = await AcademicSemesterService.getFromDb(filters,options)
         res.send({success:true,message:'academic semester fetch successfully',data:result})
           
     } catch (error) {
@@ -24,6 +28,9 @@ const getFromDb = async(req:Request,res:Response)=>{
 
 const getSingleFromDb = async (req:Request,res:Response)=>{
     try {
+        const filters = pick(req.query,['searchTerm','code','year'])
+        
+        const options = pick(req.query,['limit','page','sortBy','sortOrder'])
         const result = await AcademicSemesterService.getSingleFromDb(req.params.id)
         res.send({success:true,message:'academic semester single fetch successfully',data:result})
         
