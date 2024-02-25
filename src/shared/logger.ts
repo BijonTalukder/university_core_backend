@@ -4,6 +4,7 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 const {printf,combine,label,timestamp} = format
 const myFormat = printf(({ level, message, label, timestamp }) => {
     const date = new Date(timestamp);
+    
     const hour = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
